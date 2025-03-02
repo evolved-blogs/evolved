@@ -1,0 +1,43 @@
+import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { ProfileDto } from './dto/profile.dto';
+
+@Injectable()
+export class ProfileService {
+  constructor(private prisma: PrismaService) {}
+
+  async getProfile(userId: string) {
+    const profile = await this.prisma.profile.findUnique({
+      where: {
+        userId,
+      },
+    });
+
+    return profile;
+  }
+
+  async createProfile(userId: string) {
+    const profile = await this.prisma.profile.create({
+      data: {
+        userId,
+      },
+    });
+
+    return profile;
+  }
+
+  async updateProfile(userId: string, updateProfileDto: ProfileDto) {
+    const userProfile = await this.getProfile(userId);
+    const { profileId } = userProfile || {};
+    const profile = await this.prisma.profile.update({
+      where: {
+        profileId,
+      },
+      data: {
+        ...updateProfileDto,
+      },
+    });
+
+    return profile;
+  }
+}
