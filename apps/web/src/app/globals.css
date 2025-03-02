@@ -60,3 +60,27 @@ body {
 .animate-fadeIn {
   animation: fadeIn 2s ease-in-out;
 }
+
+.ck_editor {
+  h1 {
+    @apply text-4xl font-bold;
+  }
+  h2 {
+    @apply text-3xl font-semibold;
+  }
+  p {
+    @apply text-lg leading-relaxed;
+  }
+}
+/* Custom classes for text formatting */
+.text-title {
+  @apply text-4xl font-bold;
+}
+
+.text-subtitle {
+  @apply text-2xl font-semibold;
+}
+
+.text-description {
+  @apply text-lg leading-relaxed;
+}
