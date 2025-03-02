@@ -2,8 +2,14 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Box } from "../box";
+import { CreateBlogQuery } from "@src/services";
+import { createBlog } from "@src/services";
 
-export default function RichTextEditor() {
+interface RichTextEditorProps {
+  onSave?: (content: CreateBlogQuery) => Promise<{ success: boolean }>;
+}
+
+export default function RichTextEditor({ onSave }: RichTextEditorProps) {
   const editorRef = useRef<HTMLDivElement>(null);
   const toolbarRef = useRef<HTMLDivElement>(null);
   const [content, setContent] = useState<string>("");
@@ -12,13 +18,6 @@ export default function RichTextEditor() {
   // Execute text formatting commands
   const formatText = (command: string, value: string = "") => {
     document.execCommand(command, false, value);
-    // if (command === "formatBlock") {
-    //   console.log("formatBlock:", value);
-    //   document.execCommand(command, false, `<${value}>`);
-    // } else {
-    //   document.execCommand(command, false, value);
-    // }
-
     if (editorRef.current) {
       setContent(editorRef.current.innerHTML);
     }
@@ -33,12 +32,8 @@ export default function RichTextEditor() {
 
     console.log("Content:", content);
     try {
-      const response = await fetch("/api/save-content", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content }),
-      });
-      if (response.ok) {
+      const response = await createBlog({ content: rawHTML, title: "My Blog" });
+      if (response) {
         console.log("Content saved successfully!");
       } else {
         console.error("Error saving content");
