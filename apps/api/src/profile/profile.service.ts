@@ -6,7 +6,16 @@ import { ProfileDto } from './dto/profile.dto';
 export class ProfileService {
   constructor(private prisma: PrismaService) {}
 
-  async getProfile(userId: string) {
+  async getProfile(profileId: string) {
+    const profile = await this.prisma.profile.findUnique({
+      where: {
+        profileId,
+      },
+    });
+    return profile;
+  }
+
+  async getUserProfile(userId: string) {
     const profile = await this.prisma.profile.findUnique({
       where: {
         userId,
