@@ -11,15 +11,10 @@ export class ProfileController {
 
   @Get()
   async getProfile(@GetCurrentUserId() userId: string) {
-    const profile = await this.profile.getProfile(userId);
+    const profile = await this.profile.getUserProfile(userId);
 
     return profile;
   }
-
-  // @Post('add')
-  // async createProfile(@GetCurrentUserId() userId: string) {
-  //   return this.profile.createProfile(userId);
-  // }
 
   @Put()
   async updateProfile(
