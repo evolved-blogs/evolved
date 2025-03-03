@@ -18,9 +18,7 @@ const SignUp = () => {
       const response = await createUser({ ...data } as CreateUser);
       if (response) {
         router.push(Urls.Login);
-      } else {
-        console.error("Error ");
-      }
+      } 
     } catch (error) {
       console.error("Error:", error);
     }

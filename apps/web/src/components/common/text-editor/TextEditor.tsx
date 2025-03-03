@@ -32,9 +32,7 @@ export default function RichTextEditor({ onSave }: RichTextEditorProps) {
     try {
       const response = await createBlog({ content: rawHTML, title: "My Blog" });
       if (response) {
-      } else {
-        console.error("Error saving content");
-      }
+      } 
     } catch (error) {
       console.error("Error:", error);
     }
@@ -82,7 +80,6 @@ export default function RichTextEditor({ onSave }: RichTextEditorProps) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  console.log("toolbarPosition:", toolbarPosition);
 
   return (
     <Box className="relative">

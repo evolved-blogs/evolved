@@ -7,7 +7,7 @@ import Input from "@src/components/common/input/Input";
 import { login } from "@src/services";
 import { Login } from "@src/services/login/login.type";
 import { useRouter } from "next/navigation";
-import {Urls} from "@src/enum/index"
+import { Urls } from "@src/enum/index";
 const SignIn = () => {
   const { control, handleSubmit } = useForm<Login>();
   const router = useRouter();
@@ -17,9 +17,6 @@ const SignIn = () => {
       const response = await login({ ...data } as Login);
       if (response) {
         router.push(Urls.CreateBlog);
-        console.log("Login successfully!");
-      } else {
-        console.error("Error ");
       }
     } catch (error) {
       console.error("Error:", error);
