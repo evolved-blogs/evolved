@@ -1,9 +1,9 @@
 import axios from "axios";
 
 // Define the base URL (use environment variable for flexibility)
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL || "https://your-api.com";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
+console.log("API_BASE_URL", API_BASE_URL);
 // Create an Axios instance
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -19,9 +19,9 @@ api.interceptors.request.use((config) => {
     config.headers["User-Agent"] = "Next.js Server";
   }
 
-  // A
-  config.headers["Authorization"] =
-    `Bearer ${"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2M0N2I4NmYyODMwZWNjZGUwYWQ4ZjMiLCJlbWFpbCI6InByYW1vam5tQGdtYWlsLmNvbSIsImlhdCI6MTc0MDkyOTk1NywiZXhwIjoxNzQxMDE2MzU3fQ.5xpRT3DnnOgGDEO-IsPl359C8SiPFonguJYk4hUJd2Q"}`;
+  const token = localStorage.getItem("token"); // Read token from cookies
+
+  config.headers["Authorization"] = `Bearer ${token}`;
 
   return config;
 });

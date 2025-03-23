@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Put } from '@nestjs/common';
+import { Body, Controller, Get, Post, Put } from '@nestjs/common';
 import { ProfileService } from './profile.service';
 import { GetCurrentUserId } from 'src/common/enum/decorators/getCurrentUserId.decorator';
 import { ApiBearerAuth } from '@nestjs/swagger';
@@ -12,6 +12,13 @@ export class ProfileController {
   @Get()
   async getProfile(@GetCurrentUserId() userId: string) {
     const profile = await this.profile.getUserProfile(userId);
+
+    return profile;
+  }
+
+  @Post()
+  async createProfile(@GetCurrentUserId() userId: string) {
+    const profile = await this.profile.createProfile(userId);
 
     return profile;
   }

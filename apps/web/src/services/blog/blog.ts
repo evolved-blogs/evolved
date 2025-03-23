@@ -12,3 +12,13 @@ export const createBlog = async (data: CreateBlogQuery) => {
     throw error;
   }
 };
+
+export const getBlogs = async () => {
+  try {
+    const response = await api.get("/blog");
+    console.log("response", response);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

@@ -37,6 +37,11 @@ model blog {
   blogId      String     @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   content     String
+  thumbnail   String?
+  slug        String     @unique
+  views       Int?
+  comments    comment[]
+  likes       like[]
   author      profile    @relation(fields: [authorId], references: [profileId])
   authorId    String     @db.ObjectId
   createdAt   DateTime   @default(now())
@@ -44,10 +49,6 @@ model blog {
   status      BlogStatus
   publishedAt DateTime?
   deletedAt   DateTime?
-
-  comments comment[]
-
-  likes like[]
 }
 
 model comment {

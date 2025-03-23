@@ -1,10 +1,11 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   IsString,
   IsNotEmpty,
   IsOptional,
   IsEnum,
   IsDate,
+  IsNumber,
 } from 'class-validator';
 
 import { BlogStatus } from '@prisma/client';
@@ -14,6 +15,11 @@ export class BlogDto {
   @IsNotEmpty()
   @ApiProperty()
   title!: string;
+
+  @IsString()
+  @IsOptional()
+  @ApiPropertyOptional()
+  thumbnail?: string;
 
   @IsString()
   @IsNotEmpty()

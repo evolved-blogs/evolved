@@ -17,6 +17,7 @@ const SignUp = () => {
     try {
       const response = await createUser({ ...data } as CreateUser);
       if (response) {
+        // localStorage.setItem("token", response.token);
         router.push(Urls.Login);
       } 
     } catch (error) {

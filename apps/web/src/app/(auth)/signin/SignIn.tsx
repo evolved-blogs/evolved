@@ -15,7 +15,8 @@ const SignIn = () => {
   const onSubmit = async (data: Login) => {
     try {
       const response = await login({ ...data } as Login);
-      if (response) {
+      if (response && response?.token) {
+       localStorage.setItem("token", response.token);
         router.push(Urls.CreateBlog);
       }
     } catch (error) {

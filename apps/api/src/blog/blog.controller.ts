@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { BlogService } from './blog.service';
 import { BlogDto } from './dto/blog.dto';
 import { ApiBearerAuth } from '@nestjs/swagger';
@@ -11,7 +11,8 @@ export class BlogController {
 
   @Get()
   async getBlogs() {
-    return this.blog.getBlogs();
+    const blogs = await this.blog.getBlogs();
+    return blogs;
   }
 
   @Post('create')
@@ -19,6 +20,14 @@ export class BlogController {
     @GetCurrentUserId() userId: string,
     @Body() blogDto: BlogDto,
   ) {
-    return this.blog.createBlog(userId, blogDto);
+    console.log('userId', userId);
+    const blog = await this.blog.createBlog(userId, blogDto);
+    return blog;
+  }
+
+  @Get('get-blog/:blogId')
+  async getBlogByBlogId(@Param('blogId') blogId: string) {
+    const blog = await this.blog.getBlogByBlogId(blogId);
+    return blog;
   }
 }
