@@ -1,69 +1,115 @@
-"use client";
-import { useState, useRef } from "react";
-export default function RichTextEditor() {
-  
-  const editorRef = useRef<HTMLDivElement>(null);
-  const [content, setContent] = useState<string>("");
-  const formatText = (command: string, value: string = "") => {
-    document.execCommand(command, false, value);
-    if (editorRef.current) {
-      setContent(editorRef.current.innerHTML);
+import React, { useState, useRef, ChangeEvent, DragEvent } from "react";
+import { motion } from "framer-motion";
+
+const FileUpload: React.FC<{ onFileChange: (file: File) => void }> = ({
+  onFileChange,
+}) => {
+  const [image, setImage] = useState<string | null>(null); // Store the image preview
+  const [dragging, setDragging] = useState<boolean>(false); // Track the drag status
+  const fileInputRef = useRef<HTMLInputElement | null>(null); // Reference to the file input element
+
+  // Handle drag over event
+  const handleDragOver = (e: DragEvent<HTMLDivElement>): void => {
+    e.preventDefault();
+    setDragging(true);
+  };
+
+  // Handle drag leave event
+  const handleDragLeave = (): void => {
+    setDragging(false);
+  };
+
+  // Handle drop event
+  const handleDrop = (e: DragEvent<HTMLDivElement>): void => {
+    e.preventDefault();
+    setDragging(false);
+
+    const file = e.dataTransfer.files[0];
+    if (file) {
+      handleFileChange(file);
     }
   };
 
-  const handleSubmit = async () => {
-    try {
-      const response = await fetch("/api/save-content", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content }),
-      });
-      if (response.ok) {
-        console.log("Content saved successfully!");
-      } else {
-        console.error("Error saving content");
-      }
-    } catch (error) {
-      console.error("Error:", error);
+  // Handle file input change event
+  const handleFileInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    const file = e.target.files ? e.target.files[0] : null;
+    if (file) {
+      handleFileChange(file);
+    }
+  };
+
+  // Handle file change (both from input and drag-and-drop)
+  const handleFileChange = (file: File): void => {
+    console.log(file);
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImage(reader.result as string); // Set the image preview (base64 encoded)
+    };
+    reader.readAsDataURL(file); // Read the file as base64
+
+    // Pass the file to the parent component
+    onFileChange(file);
+  };
+
+  // Handle remove image
+  const handleRemoveImage = (): void => {
+    setImage(null);
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
     }
   };
 
   return (
-    <div className="p-4 border rounded-lg w-full max-w-2xl mx-auto">
-      <div className="mb-2 space-x-2">
-        <button onClick={() => formatText("bold")} className="p-2 border">
-          B
-        </button>
-        <button onClick={() => formatText("italic")} className="p-2 border">
-          I
-        </button>
-        <button onClick={() => formatText("underline")} className="p-2 border">
-          U
-        </button>
-        <button
-          onClick={() => formatText("insertUnorderedList")}
-          className="p-2 border"
+    <div
+      className={`relative w-64 h-64 border-2 rounded-lg cursor-pointer overflow-hidden flex items-center justify-center transition-all ${
+        dragging
+          ? "border-blue-500 bg-blue-100"
+          : "border-dashed border-gray-400"
+      }`}
+      onClick={() => fileInputRef.current && fileInputRef.current.click()}
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
+    >
+      <input
+        type="file"
+        accept="image/*"
+        className="hidden"
+        ref={fileInputRef}
+        onChange={handleFileInputChange}
+      />
+      {image ? (
+        <>
+          <motion.img
+            src={image}
+            alt="Uploaded"
+            className="w-full h-full object-cover"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+          />
+          <button
+            onClick={handleRemoveImage}
+            className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1"
+          >
+            X
+          </button>
+        </>
+      ) : (
+        <motion.div
+          className="w-full h-full flex flex-col items-center justify-center text-gray-500"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
         >
-          • List
-        </button>
-      </div>
-      <div
-        ref={editorRef}
-        contentEditable
-        className="border p-3 min-h-[200px] outline-none"
-        onInput={() => setContent(editorRef.current?.innerHTML || "")}
-      />
-      <button
-        onClick={handleSubmit}
-        className="mt-4 p-2 bg-blue-500 text-white"
-      >
-        Save Content
-      </button>
-      <h2 className="mt-6 text-lg font-bold">Preview:</h2>
-      <div
-        className="border p-3 min-h-[200px] bg-gray-100"
-        dangerouslySetInnerHTML={{ __html: content }}
-      />
+          <p className="text-lg">
+            {dragging ? "Drop your image here" : "Click or Drag to upload"}
+          </p>
+        </motion.div>
+      )}
     </div>
   );
-}
+};
+
+export default FileUpload;

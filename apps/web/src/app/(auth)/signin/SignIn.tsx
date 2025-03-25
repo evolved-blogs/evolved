@@ -8,6 +8,7 @@ import { login } from "@src/services";
 import { Login } from "@src/services/login/login.type";
 import { useRouter } from "next/navigation";
 import { Urls } from "@src/enum/index";
+import { setCookie } from "@src/utils/cookies";
 const SignIn = () => {
   const { control, handleSubmit } = useForm<Login>();
   const router = useRouter();
@@ -16,7 +17,7 @@ const SignIn = () => {
     try {
       const response = await login({ ...data } as Login);
       if (response && response?.token) {
-       localStorage.setItem("token", response.token);
+        setCookie("token", response?.token, 1);
         router.push(Urls.CreateBlog);
       }
     } catch (error) {

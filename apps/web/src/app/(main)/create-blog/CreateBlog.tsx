@@ -1,5 +1,4 @@
 import { Box } from "@src/components/common/box";
-import Input from "@src/components/common/input/Input";
 import { TextEditor } from "@src/components/common/text-editor";
 
 const CreateBlog = () => {

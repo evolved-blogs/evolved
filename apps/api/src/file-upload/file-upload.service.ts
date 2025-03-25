@@ -1,9 +1,5 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
-import {
-  S3Client,
-  PutObjectCommand,
-  PutObjectCommandOutput,
-} from '@aws-sdk/client-s3';
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import * as multer from 'multer';
 import * as multerS3 from 'multer-s3';
 import { Multer } from 'multer';
@@ -14,7 +10,7 @@ export class FileUploadService {
 
   constructor(@Inject('S3_CLIENT') private readonly s3Client: S3Client) {}
 
-  async upload(file: any): Promise<{ fileUrl: string }> {
+  async upload(file: Express.Multer.File): Promise<{ fileUrl: string }> {
     const fileName = this.generateFileName(file.originalname);
     const uploadParams = this.createUploadParams(fileName, file.buffer);
     console.log(uploadParams, fileName);
@@ -30,6 +26,26 @@ export class FileUploadService {
       this.logger.error('Error uploading file:', error);
       throw error;
     }
+  }
+
+  async uploadMultiple(
+    files: Express.Multer.File[],
+  ): Promise<{ fileUrls: string[] }> {
+    const uploadPromises = files.map(async (file) => {
+      const fileName = this.generateFileName(file.originalname);
+      const uploadParams = this.createUploadParams(fileName, file.buffer);
+      try {
+        const command = new PutObjectCommand(uploadParams);
+        await this.s3Client.send(command);
+        return this.getFileUrl(fileName);
+      } catch (error) {
+        this.logger.error('Error uploading file:', error);
+        throw error;
+      }
+    });
+
+    const fileUrls = await Promise.all(uploadPromises);
+    return { fileUrls };
   }
 
   getMulterS3Upload(): Multer {

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getCookie } from "./cookies";
 
 // Define the base URL (use environment variable for flexibility)
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -19,8 +20,7 @@ api.interceptors.request.use((config) => {
     config.headers["User-Agent"] = "Next.js Server";
   }
 
-  const token = localStorage.getItem("token"); // Read token from cookies
-
+  const token = getCookie("token"); // Read token from cookies
   config.headers["Authorization"] = `Bearer ${token}`;
 
   return config;
