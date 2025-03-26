@@ -36,7 +36,7 @@ export class ProfileService {
   }
 
   async updateProfile(userId: string, updateProfileDto: ProfileDto) {
-    const userProfile = await this.getProfile(userId);
+    const userProfile = await this.getUserProfile(userId);
     const { profileId } = userProfile || {};
     const profile = await this.prisma.profile.update({
       where: {

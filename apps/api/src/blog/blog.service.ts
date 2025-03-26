@@ -64,10 +64,10 @@ export class BlogService {
     return blog;
   }
 
-  async getBlogByBlogId(blogId: string) {
-    const blog = await this.prisma.blog.findUnique({
+  async getBlogByBlogId(slug: string) {
+    const blog = await this.prisma.blog.findFirst({
       where: {
-        blogId,
+        slug,
       },
     });
 

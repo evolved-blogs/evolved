@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Box } from "../box";
 import { CreateBlogQuery } from "@src/services";
 import { createBlog } from "@src/services";
-import Input from "../input/Input";
+import Input from "../../atoms/input/Input";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
 import { Upload } from "../upload";

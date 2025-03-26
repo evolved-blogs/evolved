@@ -22,3 +22,12 @@ export const getBlogs = async () => {
     throw error;
   }
 };
+
+export const getBlogBySlug = async (slug: string) => {
+  try {
+    const response = await api.get(`/blog/get-blog/${slug}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

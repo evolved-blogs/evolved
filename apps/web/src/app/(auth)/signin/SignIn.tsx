@@ -3,7 +3,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
-import Input from "@src/components/common/input/Input";
+import Input from "@src/components/atoms/input/Input";
 import { login } from "@src/services";
 import { Login } from "@src/services/login/login.type";
 import { useRouter } from "next/navigation";
