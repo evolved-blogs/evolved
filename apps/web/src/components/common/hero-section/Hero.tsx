@@ -79,7 +79,7 @@ const Hero = () => {
         initial="hidden"
         animate="visible"
       >
-        This is the hero section of the page
+        You Learn, You Share, You Evolve
       </motion.p>
 
       <motion.button

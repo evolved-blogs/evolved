@@ -23,7 +23,7 @@ const BlogPage = ({ slug }: { slug: string }) => {
   const { avatar, firstName, lastName } = author || {};
   return (
     <Box>
-      <div className="flex items-center gap-2 mb-4">
+      <div className="flex items-center gap-2 mt-20 mb-4">
         <Avatar
           src="https://miro.medium.com/v2/resize:fit:700/1*XuF9MnNzY2OXJqPptzey-w.png"
           size="sm"

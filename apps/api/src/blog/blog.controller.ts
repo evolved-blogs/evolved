@@ -27,6 +27,7 @@ export class BlogController {
 
   @Get('get-blog/:blogId')
   async getBlogByBlogId(@Param('blogId') blogId: string) {
+    console.log('blogId', blogId);
     const blog = await this.blog.getBlogByBlogId(blogId);
     return blog;
   }

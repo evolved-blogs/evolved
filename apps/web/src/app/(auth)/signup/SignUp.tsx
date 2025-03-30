@@ -18,7 +18,7 @@ const SignUp = () => {
       const response = await createUser({ ...data } as CreateUser);
       if (response) {
         // localStorage.setItem("token", response.token);
-        router.push(Urls.Login);
+        router.push(Urls.Profile);
       } 
     } catch (error) {
       console.error("Error:", error);
@@ -68,6 +68,13 @@ const SignUp = () => {
             Sign Up
           </button>
         </form>
+
+        <p className="mt-4 text-center text-sm text-gray-500">
+              Already have an account?{" "}
+              <a href="#" className="text-blue-500 hover:underline">
+                Log in
+              </a>
+            </p>
       </div>
     </div>
   );

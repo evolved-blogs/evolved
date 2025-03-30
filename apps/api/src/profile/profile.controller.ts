@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, Post, Patch } from '@nestjs/common';
 import { ProfileService } from './profile.service';
 import { GetCurrentUserId } from 'src/common/enum/decorators/getCurrentUserId.decorator';
 import { ApiBearerAuth } from '@nestjs/swagger';
@@ -23,7 +23,7 @@ export class ProfileController {
     return profile;
   }
 
-  @Put()
+  @Patch()
   async updateProfile(
     @GetCurrentUserId() userId: string,
     @Body() profileData: ProfileDto,

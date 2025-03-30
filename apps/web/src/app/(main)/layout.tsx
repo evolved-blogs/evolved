@@ -1,3 +1,4 @@
+import Header from "@src/components/common/header/Header";
 import React from "react";
 
 interface LayoutProps {
@@ -7,7 +8,7 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div>
-      {/* <Header /> */}
+      <Header />
       <main>{children}</main>
     </div>
   );
