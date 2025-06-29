@@ -86,6 +86,16 @@ export class BlogService {
     };
   }
 
+  async deleteBlogById(blogId: string) {
+    const blog = await this.prisma.blog.delete({
+      where: {
+        blogId,
+      },
+    });
+
+    return blog;
+  }
+
   generateSlug = (title: string) => {
     return slugify(title, {
       lower: true,

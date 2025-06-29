@@ -114,7 +114,7 @@ export default function RichTextEditor({ onSave }: RichTextEditorProps) {
   }, []);
 
   return (
-    <Box className="relative">
+    <Box className="relative mt-10">
       <AnimatePresence>
         {showToolbar && (
           <Toolbar

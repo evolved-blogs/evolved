@@ -71,6 +71,12 @@ export class AuthService {
       },
     });
 
+    const profile = await this.prisma.profile.findUnique({
+      where: {
+        userId: user?.userId,
+      },
+    });
+
     if (!user) {
       throw new HttpException(
         ExceptionEnum.UserNotFound,
@@ -106,6 +112,8 @@ export class AuthService {
         userId: user.userId,
         email: user.email,
         userName: user.userName ?? user.email,
+        avatar: profile ? profile?.avatar : null,
+        bio: profile ? profile?.bio : null,
       },
     };
   }
@@ -130,5 +138,24 @@ export class AuthService {
     });
 
     return { access_token, refresh_token };
+  }
+
+  async logout(userId: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { userId },
+    });
+
+    if (!user) {
+      throw new HttpException(ExceptionEnum.UserNotFound, HttpStatus.NOT_FOUND);
+    }
+
+    await this.prisma.user.update({
+      where: { userId },
+      data: { accessToken: null, refreshToken: null },
+    });
+
+    return {
+      message: 'User logged out successfully',
+    };
   }
 }

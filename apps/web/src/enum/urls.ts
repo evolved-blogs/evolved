@@ -3,4 +3,5 @@ export enum Urls {
   CreateAccount = "/signup",
   CreateBlog = "/create-blog",
   Profile = "/profile",
+  Home = "/",
 }

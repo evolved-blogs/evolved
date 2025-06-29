@@ -1,35 +1,60 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
 import { Search } from "@src/components/atoms/searchInput";
 import ThemeSwitchButton from "@src/components/common/theme-switch-button/ThemeSwitchButton";
-import { usePathname,useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Urls } from "@src/enum";
+import { getCookie, setCookie } from "@src/utils/cookies";
+import { Avatar } from "@src/components/atoms/avatar";
+import { Dropdown } from "@src/components/atoms/drop-down";
 
 const Header = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const { control } = useForm();
   const router = useRouter();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
-  const isBlogPage = pathname.startsWith("/blogs");
+  const isBlogPage =
+    pathname.startsWith("/blogs") || pathname.startsWith("/create-blog");
 
+  const token = getCookie("token");
+  const user = getCookie("user");
+  console.log("user", user);
+  const { avatar } = user ? JSON.parse(user) : {};
   const handleLogin = () => {
     router.push(Urls.Login);
-  }
+  };
 
   const handleRegister = () => {
     router.push(Urls.CreateAccount);
-  }
+  };
+
+  const handleOpenEditor = () => {
+    router.push(Urls.CreateBlog);
+  };
+
+  const handleNavigateHome = () => {
+    router.push(Urls.Home);
+  };
+
+  const handleLogout = () => {
+    setCookie("token", "", -1);
+    setCookie("user", "", -1);
+    router.push(Urls.Login);
+  };
   return (
     <header className="fixed top-0 left-0 w-full bg-white/30 backdrop-blur-lg shadow-md z-50">
-       <motion.div
-      className="flex items-center justify-between max-w-screen-xl mx-auto px-4"
-      animate={{ paddingTop: isBlogPage ? 12 : 32, paddingBottom: isBlogPage ? 12 : 32 }} // Adjust padding
-      transition={{ duration: 0.4, ease: "easeInOut" }} // Smooth animation
-    >
+      <motion.div
+        className="flex items-center justify-between max-w-screen-xl mx-auto px-4"
+        animate={{
+          paddingTop: isBlogPage ? 12 : 32,
+          paddingBottom: isBlogPage ? 12 : 32,
+        }}
+        transition={{ duration: 0.4, ease: "easeInOut" }}
+      >
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -41,10 +66,9 @@ const Header = () => {
             width={140}
             height={40}
             className="cursor-pointer"
+            onClick={handleNavigateHome}
           />
         </motion.div>
-
-      
 
         <motion.div className="relative  rounded-full p-[2px] overflow-hidden">
           <motion.div
@@ -60,51 +84,64 @@ const Header = () => {
           />
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, x: 10 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="hidden md:flex items-center space-x-4"
-        >
-          <button onClick={handleLogin} className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-5 py-2 rounded-full font-semibold shadow-md transition-all hover:shadow-lg hover:scale-105">
-            Login
-          </button>
-          <button onClick={handleRegister} className="bg-gray-700 text-white px-5 py-2 rounded-full font-semibold shadow-md transition-all hover:bg-blue-600">
-            Register
-          </button>
-          {/* <ThemeSwitchButton /> */}
-        </motion.div>
-
-        {/* Mobile Menu Button */}
-        {/* <button
-          className="md:hidden p-2 rounded-md text-gray-700 hover:bg-gray-200 transition"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        >
-          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button> */}
+        {token ? (
+          <div className="flex items-center space-x-4">
+            <div
+              className="text-subtitle cursor-pointer"
+              onClick={handleOpenEditor}
+            >
+              🖋️
+            </div>
+            {/* <div
+              className="cursor-pointer relative "
+              onClick={() => setIsOpen(!isOpen)}
+            >
+              <Avatar src={avatar} size="md" />
+              {isOpen && (
+                
+              )}
+            </div> */}
+            <Dropdown
+              label="view Profile"
+              items={[
+                {
+                  label: "Profile",
+                  onClick: () => router.push(Urls.Profile),
+                },
+                {
+                  label: "Create Blog",
+                  onClick: () => router.push(Urls.CreateBlog),
+                },
+                {
+                  label: "Logout",
+                  onClick: handleLogout,
+                },
+              ]}
+            />
+          </div>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0, x: 10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="hidden md:flex items-center space-x-4"
+          >
+            <button
+              onClick={handleLogin}
+              className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-5 py-2 rounded-full font-semibold shadow-md transition-all hover:shadow-lg hover:scale-105"
+            >
+              Login
+            </button>
+            <button
+              onClick={handleRegister}
+              className="bg-gray-700 text-white px-5 py-2 rounded-full font-semibold shadow-md transition-all hover:bg-blue-600"
+            >
+              Register
+            </button>
+            {/* <ThemeSwitchButton /> */}
+          </motion.div>
+        )}
       </motion.div>
-
-      {mobileMenuOpen && (
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-          className="md:hidden mt-4 space-y-4 text-center bg-white p-4 rounded-lg shadow-md"
-        >
-          <Search
-            control={control}
-            name="search"
-            className="w-full border rounded-lg p-2"
-          />
-          <button className="w-full bg-blue-500 text-white py-2 rounded-lg">
-            Login
-          </button>
-          <button className="w-full bg-gray-700 text-white py-2 rounded-lg">
-            Register
-          </button>
-          <ThemeSwitchButton />
-        </motion.div>
-      )}
     </header>
   );
 };

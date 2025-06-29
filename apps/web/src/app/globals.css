@@ -44,7 +44,7 @@
 
 body {
   color: var(--foreground);
-  background: var(--background);
+  background: var(--secondary-100) !important;
   font-family: Arial, Helvetica, sans-serif;
 }
 

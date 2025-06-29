@@ -33,11 +33,11 @@ const BlogPage = ({ slug }: { slug: string }) => {
             {firstName} {lastName}
           </h4>
           <span className="text-slate-500">
-            Published on {formatDate(createdAt)}
+           Published on {formatDate(createdAt)}
           </span>
         </div>
       </div>
-      <h1 className="text-title font-thin">{title}</h1>
+      <h1 className="text-title font-thin mb-10">{title}</h1>
 
       <div dangerouslySetInnerHTML={{ __html: content }}></div>
     </Box>

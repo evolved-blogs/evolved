@@ -18,6 +18,7 @@ const SignIn = () => {
       const response = await login({ ...data } as Login);
       if (response && response?.token) {
         setCookie("token", response?.token, 1);
+        setCookie("user", JSON.stringify(response?.user), 1);
         router.push(Urls.CreateBlog);
       }
     } catch (error) {
