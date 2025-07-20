@@ -103,4 +103,21 @@ export class BlogService {
       trim: true,
     });
   };
+
+  async getBlogByUserId(userId: string) {
+    const profile = await this.profile.getUserProfile(userId);
+    if (!profile?.profileId) {
+      return {
+        ...HTTPExceptions.NOT_FOUND,
+        message: `Profile ${HTTPExceptions.NOT_FOUND.message}`,
+      };
+    }
+    const blogs = await this.prisma.blog.findMany({
+      where: {
+        authorId: profile.profileId,
+      },
+    });
+
+    return blogs;
+  }
 }

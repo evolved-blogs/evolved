@@ -6,8 +6,11 @@ import { uploadFile } from "@src/services/upload/upload";
 import { useForm } from "react-hook-form";
 import Input from "@src/components/atoms/input/Input";
 import { updateProfile } from "@src/services/profile/profile";
+import { useRouter } from "next/navigation";
+import { Urls } from "@src/enum";
 const Profile = () => {
   const [step, setStep] = useState(1); // Step number
+  const router = useRouter();
   const [progress, setProgress] = useState(33);
   const [file, setFile] = useState<File | null>(null);
   const {
@@ -49,7 +52,7 @@ const Profile = () => {
         ...formData,
       });
       if (response) {
-        alert("Profile Updated successfully");
+        router.push(Urls.Home);
       }
     } catch (error) {
       console.error("Error:", error);

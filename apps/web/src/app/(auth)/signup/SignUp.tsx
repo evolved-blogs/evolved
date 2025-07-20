@@ -8,6 +8,7 @@ import { CreateUser } from "@src/services/create-user/createUser.type";
 import { createUser } from "@src/services";
 import { useRouter } from "next/navigation";
 import { Urls } from "@src/enum";
+import { setCookie } from "@src/utils/cookies";
 
 const SignUp = () => {
   const { control, handleSubmit } = useForm<CreateUser>();
@@ -16,10 +17,12 @@ const SignUp = () => {
   const onSubmit = async (data: CreateUser) => {
     try {
       const response = await createUser({ ...data } as CreateUser);
-      if (response) {
-        // localStorage.setItem("token", response.token);
+      console.log("Response:", response);
+      if (response && response.token) {
+        setCookie("token", response?.token, 1);
+        // setCookie("user", JSON.stringify(response?.user), 1);
         router.push(Urls.Profile);
-      } 
+      }
     } catch (error) {
       console.error("Error:", error);
     }
@@ -70,11 +73,11 @@ const SignUp = () => {
         </form>
 
         <p className="mt-4 text-center text-sm text-gray-500">
-              Already have an account?{" "}
-              <a href="#" className="text-blue-500 hover:underline">
-                Log in
-              </a>
-            </p>
+          Already have an account?{" "}
+          <a href="/signin" className="text-blue-500 hover:underline">
+            Log in
+          </a>
+        </p>
       </div>
     </div>
   );

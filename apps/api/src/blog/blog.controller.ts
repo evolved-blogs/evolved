@@ -38,4 +38,10 @@ export class BlogController {
     const blog = await this.blog.deleteBlogById(blogId);
     return blog;
   }
+
+  @Get('blogs-by-user')
+  async getBlogByUserId(@GetCurrentUserId() userId: string) {
+    const blogs = await this.blog.getBlogByUserId(userId);
+    return blogs;
+  }
 }

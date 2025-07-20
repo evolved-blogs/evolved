@@ -20,7 +20,7 @@ const Toolbar = forwardRef<HTMLDivElement, ToolbarProps>(function Toolbar(
       transition={{ duration: 0.2, ease: "easeOut" }}
       className="absolute p-2 bg-white border rounded shadow-lg space-x-2 z-10"
       style={{
-        top: `${toolbarPosition.top}px`,
+        top: `${toolbarPosition.top + 50}px`,
         left: `${toolbarPosition.left}px`,
       }}
     >
@@ -75,10 +75,16 @@ const Toolbar = forwardRef<HTMLDivElement, ToolbarProps>(function Toolbar(
       >
         Image
       </button>
-      <button onClick={() => formatText("bold")} className="p-2 border">
+      <button
+        onClick={() => formatText("bold")}
+        className="p-2 border font-bold"
+      >
         B
       </button>
-      <button onClick={() => formatText("italic")} className="p-2 border">
+      <button
+        onClick={() => formatText("italic")}
+        className="p-2 border italic"
+      >
         I
       </button>
       <button onClick={() => formatText("underline")} className="p-2 border">

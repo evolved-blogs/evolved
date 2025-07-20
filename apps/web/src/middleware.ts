@@ -1,21 +1,30 @@
 import { NextRequest, NextResponse } from "next/server";
+import { authenticatedRoutes } from "@src/routes";
+import { Urls } from "./enum";
 
-export function middleware(req: NextRequest) {
+const middleware = async (req: NextRequest) => {
+  const pathName = req.nextUrl.pathname;
+  const isPublicPath = pathName === "/";
   const token = req.cookies.get("token");
-  const { pathname } = req.nextUrl;
+
   console.log("token", token);
-  console.log("req.nextUrl.pathname", req.nextUrl.pathname);
+  const unauthenticated = authenticatedRoutes.some(
+    (route) => route === pathName
+  );
 
-  // Exclude the /signin page from the middleware check
-  if (pathname === "/signin" || pathname.startsWith("/_next/")) {
-    return NextResponse.next(); // Allow request to /signin to continue without token check
+  console.log("Middleware unauthenticated:", unauthenticated);
+  if (!token && unauthenticated) {
+    console.log("Redirecting to /login");
+    return NextResponse.redirect(new URL(Urls.Login, req.url));
+  } else {
+    return NextResponse.next();
   }
+};
 
-  // If token is not found, redirect to signin page
-  if (!token) {
-    return NextResponse.redirect(new URL("/signin", req.url));
-  }
+export default middleware;
 
-  // Token exists, allow request to continue
-  return NextResponse.next();
-}
+export const config = {
+  matcher: [
+    "/((?!api|webmanifest.webmanifest|_next/static|_next/image|.*\\.png$|.*\\.svg$).*)",
+  ],
+};

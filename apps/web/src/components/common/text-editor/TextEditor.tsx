@@ -10,6 +10,8 @@ import Image from "next/image";
 import { Upload } from "../upload";
 import Toolbar from "./Toolbar";
 import { uploadFile } from "@src/services/upload/upload";
+import { useRouter } from "next/navigation";
+import { Urls } from "@src/enum";
 
 interface RichTextEditorProps {
   onSave?: (content: CreateBlogQuery) => Promise<{ success: boolean }>;
@@ -25,7 +27,7 @@ export default function RichTextEditor({ onSave }: RichTextEditorProps) {
   const placeholderText = "Write a fresh blog here...";
   const [typedText, setTypedText] = useState("");
   const [file, setFile] = useState<File | null>(null);
-
+  const router = useRouter();
   const onFileChange = (file: File | null) => {
     setFile(file || null);
   };
@@ -55,6 +57,7 @@ export default function RichTextEditor({ onSave }: RichTextEditorProps) {
       });
       if (response) {
         alert("Blog created successfully");
+        router.push(Urls.Home);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -62,20 +65,20 @@ export default function RichTextEditor({ onSave }: RichTextEditorProps) {
   };
 
   const updateToolbarPosition = () => {
-    if (editorRef.current) {
-      const selection = window.getSelection();
-      if (selection && selection.rangeCount > 0) {
-        const range = selection.getRangeAt(0);
-        const rect = range.getBoundingClientRect();
-        const editorRect = editorRef.current.getBoundingClientRect();
+    if (!editorRef.current) return;
 
-        setToolbarPosition({
-          top: rect.top - editorRect.top - 40,
-          left: rect.left - editorRect.left,
-        });
+    const selection = window.getSelection();
+    if (selection && selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+      const rect = range.getBoundingClientRect();
+      const editorRect = editorRef.current.getBoundingClientRect();
 
-        setShowToolbar(true);
-      }
+      setToolbarPosition({
+        top: rect.top - editorRect.top - 5,
+        left: rect.left - editorRect.left,
+      });
+
+      setShowToolbar(true);
     }
   };
 
@@ -135,7 +138,7 @@ export default function RichTextEditor({ onSave }: RichTextEditorProps) {
 
         <motion.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          animate={{ opacity: 1, top: 0 }}
           transition={{ duration: 0.5 }}
           className="border p-3 min-h-[200px] outline-none ck_editor"
           contentEditable
@@ -144,13 +147,14 @@ export default function RichTextEditor({ onSave }: RichTextEditorProps) {
           onInput={() => setContent(editorRef.current?.innerHTML || "")}
           onBlur={() => setTimeout(() => setShowToolbar(false), 200)}
         >
-          {content === "" ? (
+          {/* {content === "" ? (
             <span className="font-semibold text-3xl text-gray-400">
               {typedText}
             </span>
           ) : (
             typedText
-          )}
+          )} */}
+          {typedText}
         </motion.div>
         <Upload onFileChange={onFileChange} />
 

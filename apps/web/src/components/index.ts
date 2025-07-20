@@ -4,4 +4,5 @@ export {
   DropdownMenu,
   DropdownItem,
   Button as HeroUIButton,
+  Input as HeroUIInput,
 } from "@heroui/react";

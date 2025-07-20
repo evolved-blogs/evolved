@@ -50,10 +50,13 @@ export class AuthService {
       },
     });
 
+    const { access_token, refresh_token } = await this.getTokens(newUser);
     await this.profile.createProfile(newUser.userId);
 
     return {
       message: ResponseEnum.UserCreatedSuccessfully,
+      token: access_token,
+      refresh_token: refresh_token,
       user: {
         userId: newUser.userId,
         email: newUser.email,

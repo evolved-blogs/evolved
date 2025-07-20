@@ -31,3 +31,12 @@ export const getBlogBySlug = async (slug: string) => {
     throw error;
   }
 };
+
+export const getBlogByUserId = async () => {
+  try {
+    const response = await api.get(`/blog/blogs-by-user`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

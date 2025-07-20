@@ -11,3 +11,14 @@ export const updateProfile = async (data: Profile) => {
     throw error;
   }
 };
+
+export const getProfile = async () => {
+  try {
+    const response = await api.get("/profile");
+
+    console.log("response", response);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

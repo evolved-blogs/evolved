@@ -1,7 +1,7 @@
+import { HeroUIInput } from "@src/components";
 import { Controller, PathValue } from "react-hook-form";
 
 import { Control, FieldValues, RegisterOptions, Path } from "react-hook-form";
-
 
 interface InputProps<T extends FieldValues> {
   control: Control<T>;
@@ -17,64 +17,113 @@ interface InputProps<T extends FieldValues> {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
+// const Input = <T extends FieldValues>(props: InputProps<T>) => {
+//   const {
+//     control,
+//     name,
+//     className = "",
+//     defaultValue,
+//     label,
+//     placeholder = "",
+//     isRequired = false,
+//     readonly = false,
+//     rules = {},
+//     labelPlacement = "outside",
+//     onChange: customOnChange
+//   } = props || {};
+
+//   return (
+//     <div className={`flex flex-col ${className}`}>
+//       {label && labelPlacement === "outside" && (
+//         <label htmlFor={name} className="mb-1 font-medium text-gray-700">
+//           {label} {isRequired && <span className="text-red-500">*</span>}
+//         </label>
+//       )}
+
+//       <Controller
+//         name={name}
+//         control={control}
+//         defaultValue={defaultValue}
+//         rules={{
+//           required: isRequired ? `${label} is required` : false,
+//           ...rules,
+//           deps: rules?.deps as Path<T> | Path<T>[] | undefined,
+//         }}
+//         render={({
+//           field: { onChange, value = "", ...rest },
+//           fieldState: { error },
+//         }) => (
+//           <HeroUIInput
+//           // <div className="relative items-center">
+//           //   <input
+//           //     {...rest}
+//           //     value={value}
+//           //     onChange={(e) => {
+//           //       onChange(e);
+//           //       if (customOnChange) customOnChange(e);
+//           //     }}
+//           //     id={name}
+//           //     placeholder={placeholder}
+//           //     readOnly={readonly}
+//           //     className={`border p-2 w-full rounded-md
+//           //       ${error ? "border-red-500" : "border-gray-300"}
+//           //     `}
+//           //   />
+//           //   {error && (
+//           //     <p className="text-red-500 text-sm mt-1">{error.message}</p>
+//           //   )}
+//           // </div>
+//         )}
+//       />
+//     </div>
+//   );
+// };
 const Input = <T extends FieldValues>(props: InputProps<T>) => {
   const {
-    control,
     name,
-    className = "",
     defaultValue,
+    control,
     label,
-    placeholder = "",
+    placeholder,
     isRequired = false,
     readonly = false,
-    rules = {},
-    labelPlacement = "outside",
-    onChange: customOnChange
+    rules,
+    onChange: customOnChange,
   } = props || {};
-
   return (
-    <div className={`flex flex-col ${className}`}>
-      {label && labelPlacement === "outside" && (
-        <label htmlFor={name} className="mb-1 font-medium text-gray-700">
-          {label} {isRequired && <span className="text-red-500">*</span>}
-        </label>
-      )}
-
-      <Controller
-        name={name}
-        control={control}
-        defaultValue={defaultValue}
-        rules={{
-          required: isRequired ? `${label} is required` : false,
-          ...rules,
-          deps: rules?.deps as Path<T> | Path<T>[] | undefined,
-        }}
-        render={({
-          field: { onChange, value = "", ...rest },
-          fieldState: { error },
-        }) => (
-          <div className="relative items-center">
-            <input
-              {...rest}
-              value={value}
-              onChange={(e) => {
-                onChange(e); 
-                if (customOnChange) customOnChange(e); 
-              }}
-              id={name}
-              placeholder={placeholder}
-              readOnly={readonly}
-              className={`border p-2 w-full rounded-md 
-                ${error ? "border-red-500" : "border-gray-300"}
-              `}
-            />
-            {error && (
-              <p className="text-red-500 text-sm mt-1">{error.message}</p>
-            )}
-          </div>
-        )}
-      />
-    </div>
+    <Controller
+      name={name}
+      control={control}
+      defaultValue={defaultValue}
+      rules={{
+        required: {
+          value: isRequired,
+          message: `${label} is required`,
+        },
+        ...(rules
+          ? {
+              ...rules,
+              deps: rules.deps as Path<T> | Path<T>[] | undefined,
+            }
+          : {}),
+      }}
+      render={({ field: { onChange, ...rest }, fieldState }) => {
+        const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+          onChange(event);
+          customOnChange?.(event);
+        };
+        return (
+          <HeroUIInput
+            {...rest}
+            label={label}
+            placeholder={placeholder}
+            isRequired={isRequired}
+            errorMessage={fieldState.error?.message}
+            onChange={customOnChange ? handleOnChange : onChange}
+          />
+        );
+      }}
+    />
   );
 };
 

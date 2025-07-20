@@ -19,7 +19,7 @@ const SignIn = () => {
       if (response && response?.token) {
         setCookie("token", response?.token, 1);
         setCookie("user", JSON.stringify(response?.user), 1);
-        router.push(Urls.CreateBlog);
+        router.push(Urls.Home);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -62,6 +62,12 @@ const SignIn = () => {
             Sign In
           </button>
         </form>
+        <p className="mt-4 text-center text-sm text-gray-500">
+          Don&apos;t have an account?{" "}
+          <a href="/signup" className="text-blue-500 hover:underline">
+            Sign up
+          </a>
+        </p>
       </div>
     </div>
   );

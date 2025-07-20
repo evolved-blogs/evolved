@@ -24,16 +24,13 @@ const BlogPage = ({ slug }: { slug: string }) => {
   return (
     <Box>
       <div className="flex items-center gap-2 mt-20 mb-4">
-        <Avatar
-          src="https://miro.medium.com/v2/resize:fit:700/1*XuF9MnNzY2OXJqPptzey-w.png"
-          size="sm"
-        />
+        <Avatar src={avatar} size="sm" />
         <div>
           <h4 className="font-bold">
             {firstName} {lastName}
           </h4>
           <span className="text-slate-500">
-           Published on {formatDate(createdAt)}
+            Published on {formatDate(createdAt)}
           </span>
         </div>
       </div>
