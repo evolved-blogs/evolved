@@ -5,4 +5,5 @@ export enum Urls {
   Profile = "/profile",
   Home = "/",
   ProfileView = "/profile/view",
+  Code = "/code",
 }
