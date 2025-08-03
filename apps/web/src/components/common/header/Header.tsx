@@ -106,7 +106,7 @@ const Header = () => {
               items={[
                 {
                   label: "Profile",
-                  onClick: () => router.push(Urls.Profile),
+                  onClick: () => router.push(Urls.ProfileView),
                 },
                 {
                   label: "Create Blog",

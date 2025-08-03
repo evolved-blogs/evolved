@@ -12,6 +12,7 @@ import Toolbar from "./Toolbar";
 import { uploadFile } from "@src/services/upload/upload";
 import { useRouter } from "next/navigation";
 import { Urls } from "@src/enum";
+import { addToast } from "@heroui/react";
 
 interface RichTextEditorProps {
   onSave?: (content: CreateBlogQuery) => Promise<{ success: boolean }>;
@@ -56,7 +57,11 @@ export default function RichTextEditor({ onSave }: RichTextEditorProps) {
         thumbnail: fileUrl,
       });
       if (response) {
-        alert("Blog created successfully");
+        addToast({
+          title: "Congratulations!",
+          description: "Your blog has been published.",
+          color: "success",
+        });
         router.push(Urls.Home);
       }
     } catch (error) {
