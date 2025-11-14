@@ -8,7 +8,7 @@ on:
 jobs:
   deploy-api:
     name: Deploy Backend to Production
-    runs-on: api-prod
+    runs-on: [api, prod]
 
     steps:
       - name: Checkout code

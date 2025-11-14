@@ -8,7 +8,7 @@ on:
 jobs:
   deploy-web:
     name: Deploy Frontend to Production
-    runs-on: web-prod
+    runs-on: [web, prod]
 
     steps:
       - name: Checkout code
