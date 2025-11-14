@@ -29,6 +29,10 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install
+
+      - name: Stop PM2 process
+        run: pm2 stop 0
+
       - name: Navigate to apps/api and build
         run: |
           cd apps/api
@@ -39,5 +43,4 @@ jobs:
       - name: Start application with PM2
         run: |
           cd apps/api
-          pm2 start pnpm --name "evolved-api" -- start:prod
-          pm2 save
+          pm2 restart 0
