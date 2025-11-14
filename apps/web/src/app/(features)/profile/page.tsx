@@ -13,11 +13,7 @@ const Profile = () => {
   const router = useRouter();
   const [progress, setProgress] = useState(33);
   const [file, setFile] = useState<File | null>(null);
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm({
+  const { handleSubmit, control } = useForm({
     defaultValues: {
       firstName: "",
       lastName: "",
@@ -38,6 +34,7 @@ const Profile = () => {
     setFile(file || null);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmit = async (data: any) => {
     try {
       if (!file) {

@@ -53,23 +53,25 @@ const Toolbar = forwardRef<HTMLDivElement, ToolbarProps>(function Toolbar(
       </button>
       <button
         onClick={() => {
-          const input = document.createElement("input");
-          input.type = "file";
-          input.accept = "image/*";
+          if (typeof window !== 'undefined') {
+            const input = document.createElement("input");
+            input.type = "file";
+            input.accept = "image/*";
 
-          input.onchange = async (event) => {
-            const file = (event.target as HTMLInputElement).files?.[0];
-            if (file) {
-              const reader = new FileReader();
-              reader.onload = () => {
-                const imageUrl = reader.result as string;
-                formatText("insertImage", imageUrl);
-              };
-              reader.readAsDataURL(file);
-            }
-          };
+            input.onchange = async (event) => {
+              const file = (event.target as HTMLInputElement).files?.[0];
+              if (file) {
+                const reader = new FileReader();
+                reader.onload = () => {
+                  const imageUrl = reader.result as string;
+                  formatText("insertImage", imageUrl);
+                };
+                reader.readAsDataURL(file);
+              }
+            };
 
-          input.click();
+            input.click();
+          }
         }}
         className="p-2 border"
       >

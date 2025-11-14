@@ -86,7 +86,6 @@ const Input = <T extends FieldValues>(props: InputProps<T>) => {
     label,
     placeholder,
     isRequired = false,
-    readonly = false,
     rules,
     onChange: customOnChange,
   } = props || {};

@@ -24,6 +24,9 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
+    // Ensure we're on the client side
+    if (typeof window === 'undefined') return;
+    
     const hero = document.getElementById("hero-section");
     if (hero) {
       setHeroHeight(hero.offsetHeight);

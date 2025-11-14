@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { Avatar } from "@src/components/atoms/avatar";
 import { Box } from "@src/components/common/box";
@@ -8,17 +9,17 @@ import { useEffect, useState } from "react";
 const BlogPage = ({ slug }: { slug: string }) => {
   console.log("slug", slug);
 
-  const [posts, setPosts] = useState([]);
+  const [post, setPost] = useState<any>({});
   useEffect(() => {
     const fetchPosts = async () => {
       const response = await getBlogBySlug(slug);
       console.log("response", response);
-      setPosts(response);
+      setPost(response);
     };
     fetchPosts();
   }, [slug]);
 
-  const { title, content, thumbnail, author, createdAt } = posts || {};
+  const { title, content, author, createdAt } = post || {};
 
   const { avatar, firstName, lastName } = author || {};
   return (

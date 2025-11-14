@@ -33,7 +33,7 @@ const Hero = () => {
 
     const getStarted = () => {
         console.log("Get Started");
-        if (window.scrollY === 0) {
+        if (typeof window !== 'undefined' && window.scrollY === 0) {
           window.scrollTo(0, window.innerHeight-40);
         }
      }

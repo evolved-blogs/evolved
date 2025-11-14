@@ -4,7 +4,6 @@ import { Urls } from "./enum";
 
 const middleware = async (req: NextRequest) => {
   const pathName = req.nextUrl.pathname;
-  const isPublicPath = pathName === "/";
   const token = req.cookies.get("token");
 
   console.log("token", token);

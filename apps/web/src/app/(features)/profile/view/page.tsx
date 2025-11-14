@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import Input from "@src/components/atoms/input/Input";
@@ -8,7 +9,6 @@ import Image from "next/image";
 import { getBlogByUserId } from "@src/services";
 import { BlogCard } from "@src/components/common/blog-card";
 import { useRouter } from "next/navigation";
-import Header from "@src/components/common/header/Header";
 
 type Profile = {
   firstName?: string;

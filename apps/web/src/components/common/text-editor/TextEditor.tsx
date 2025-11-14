@@ -6,7 +6,6 @@ import { CreateBlogQuery } from "@src/services";
 import { createBlog } from "@src/services";
 import Input from "../../atoms/input/Input";
 import { useForm } from "react-hook-form";
-import Image from "next/image";
 import { Upload } from "../upload";
 import Toolbar from "./Toolbar";
 import { uploadFile } from "@src/services/upload/upload";
@@ -18,10 +17,11 @@ interface RichTextEditorProps {
   onSave?: (content: CreateBlogQuery) => Promise<{ success: boolean }>;
 }
 
-export default function RichTextEditor({ onSave }: RichTextEditorProps) {
+export default function RichTextEditor({}: RichTextEditorProps) {
   const editorRef = useRef<HTMLDivElement>(null);
   const toolbarRef = useRef<HTMLDivElement>(null);
   const [content, setContent] = useState<string>("");
+  console.log("content", content);
   const [showToolbar, setShowToolbar] = useState(false);
   const [toolbarPosition, setToolbarPosition] = useState({ top: 0, left: 0 });
   const { control, getValues } = useForm<CreateBlogQuery>();
@@ -34,11 +34,13 @@ export default function RichTextEditor({ onSave }: RichTextEditorProps) {
   };
 
   const formatText = (command: string, value: string = "") => {
-    document.execCommand(command, false, value);
-    if (editorRef.current) {
-      setContent(editorRef.current.innerHTML);
+    if (typeof window !== 'undefined') {
+      document.execCommand(command, false, value);
+      if (editorRef.current) {
+        setContent(editorRef.current.innerHTML);
+      }
+      updateToolbarPosition();
     }
-    updateToolbarPosition();
   };
 
   const handleSubmit = async () => {
@@ -70,7 +72,7 @@ export default function RichTextEditor({ onSave }: RichTextEditorProps) {
   };
 
   const updateToolbarPosition = () => {
-    if (!editorRef.current) return;
+    if (!editorRef.current || typeof window === 'undefined') return;
 
     const selection = window.getSelection();
     if (selection && selection.rangeCount > 0) {
@@ -88,10 +90,12 @@ export default function RichTextEditor({ onSave }: RichTextEditorProps) {
   };
 
   useEffect(() => {
-    document.addEventListener("selectionchange", updateToolbarPosition);
-    return () => {
-      document.removeEventListener("selectionchange", updateToolbarPosition);
-    };
+    if (typeof window !== 'undefined') {
+      document.addEventListener("selectionchange", updateToolbarPosition);
+      return () => {
+        document.removeEventListener("selectionchange", updateToolbarPosition);
+      };
+    }
   }, []);
 
   useEffect(() => {
@@ -117,8 +121,10 @@ export default function RichTextEditor({ onSave }: RichTextEditorProps) {
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    if (typeof window !== 'undefined') {
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => document.removeEventListener("mousedown", handleClickOutside);
+    }
   }, []);
 
   return (

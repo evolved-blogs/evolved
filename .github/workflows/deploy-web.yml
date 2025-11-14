@@ -30,6 +30,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Stop PM2 process
+        run: pm2 stop 0
+
       - name: Navigate to apps/web and build
         run: |
           cd apps/web
@@ -39,5 +42,4 @@ jobs:
       - name: Start application with PM2
         run: |
           cd apps/web
-          pm2 start pnpm --name "evolved-web" -- start
-          pm2 save
+          pm2 restart 0

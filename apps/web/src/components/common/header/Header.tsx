@@ -1,19 +1,16 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
 import { Search } from "@src/components/atoms/searchInput";
-import ThemeSwitchButton from "@src/components/common/theme-switch-button/ThemeSwitchButton";
 import { usePathname, useRouter } from "next/navigation";
 import { Urls } from "@src/enum";
 import { getCookie, setCookie } from "@src/utils/cookies";
-import { Avatar } from "@src/components/atoms/avatar";
 import { Dropdown } from "@src/components/atoms/drop-down";
 
 const Header = () => {
-  const [isOpen, setIsOpen] = useState(false);
   const { control } = useForm();
   const router = useRouter();
   const pathname = usePathname();
@@ -23,7 +20,6 @@ const Header = () => {
   const token = getCookie("token");
   const user = getCookie("user");
   console.log("user", user);
-  const { avatar } = user ? JSON.parse(user) : {};
   const handleLogin = () => {
     router.push(Urls.Login);
   };
