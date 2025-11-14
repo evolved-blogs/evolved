@@ -1,0 +1,43 @@
+name: Deploy API (Production)
+
+on:
+  push:
+    tags:
+      - "api-v*.*.*"
+
+jobs:
+  deploy-api:
+    name: Deploy Backend to Production
+    runs-on: api-prod
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Install PM2
+        run: npm install -g pm2
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Navigate to apps/api and build
+        run: |
+          cd apps/api
+          cp ~/.env.api .env
+          pnpm build
+
+      - name: Start application with PM2
+        run: |
+          cd apps/api
+          pm2 start pnpm --name "evolved-api" -- start:prod
+          pm2 save

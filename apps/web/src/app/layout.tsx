@@ -17,11 +17,7 @@ export default function RootLayout({
 
   const matchedAppRoutes = appRoutes.some((route) => pathName === route);
 
-  console.log("routes", appRoutes);
-  console.log("matchedAppRoutes", matchedAppRoutes);
-  console.log("pathName", pathName);
   if (!matchedAppRoutes || pathName === "/") {
-    console.log("not matched app routes");
     return (
       <html lang="en">
         <body>
