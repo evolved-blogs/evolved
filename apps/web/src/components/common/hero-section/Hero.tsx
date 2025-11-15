@@ -31,12 +31,12 @@ const Hero = () => {
     },
   };
 
-    const getStarted = () => {
-        console.log("Get Started");
-        if (typeof window !== 'undefined' && window.scrollY === 0) {
-          window.scrollTo(0, window.innerHeight-40);
-        }
-     }
+  const getStarted = () => {
+    console.log("Get Started");
+    if (typeof window !== "undefined" && window.scrollY === 0) {
+      window.scrollTo(0, window.innerHeight - 40);
+    }
+  };
 
   return (
     <motion.div className="h-screen flex flex-col items-center justify-center bg-gradient-to-r from-blue-500 to-purple-500 text-white text-center px-6">
