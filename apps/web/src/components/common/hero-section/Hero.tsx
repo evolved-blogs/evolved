@@ -1,12 +1,12 @@
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 
 const Hero = () => {
-  const textVariants = {
+  const textVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 1, ease: "easeOut" } },
   };
 
-  const firstSpanVariants = {
+  const firstSpanVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -14,7 +14,7 @@ const Hero = () => {
     },
   };
 
-  const secondSpanVariants = {
+  const secondSpanVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -22,7 +22,7 @@ const Hero = () => {
     },
   };
 
-  const letterVariants = {
+  const letterVariants: Variants = {
     hidden: { opacity: 0, y: 10 },
     visible: {
       opacity: 1,

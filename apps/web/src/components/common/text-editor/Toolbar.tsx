@@ -53,7 +53,7 @@ const Toolbar = forwardRef<HTMLDivElement, ToolbarProps>(function Toolbar(
       </button>
       <button
         onClick={() => {
-          if (typeof window !== 'undefined') {
+          if (typeof window !== "undefined") {
             const input = document.createElement("input");
             input.type = "file";
             input.accept = "image/*";

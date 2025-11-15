@@ -34,7 +34,7 @@ export default function RichTextEditor({}: RichTextEditorProps) {
   };
 
   const formatText = (command: string, value: string = "") => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       document.execCommand(command, false, value);
       if (editorRef.current) {
         setContent(editorRef.current.innerHTML);
@@ -72,7 +72,7 @@ export default function RichTextEditor({}: RichTextEditorProps) {
   };
 
   const updateToolbarPosition = () => {
-    if (!editorRef.current || typeof window === 'undefined') return;
+    if (!editorRef.current || typeof window === "undefined") return;
 
     const selection = window.getSelection();
     if (selection && selection.rangeCount > 0) {
@@ -90,7 +90,7 @@ export default function RichTextEditor({}: RichTextEditorProps) {
   };
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       document.addEventListener("selectionchange", updateToolbarPosition);
       return () => {
         document.removeEventListener("selectionchange", updateToolbarPosition);
@@ -121,9 +121,10 @@ export default function RichTextEditor({}: RichTextEditorProps) {
       }
     };
 
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       document.addEventListener("mousedown", handleClickOutside);
-      return () => document.removeEventListener("mousedown", handleClickOutside);
+      return () =>
+        document.removeEventListener("mousedown", handleClickOutside);
     }
   }, []);
 

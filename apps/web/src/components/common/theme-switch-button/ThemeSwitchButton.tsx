@@ -6,14 +6,14 @@ const ThemeSwitchButton: React.FC = () => {
   const [theme, setTheme] = useState("light");
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       const currentTheme = document.documentElement.getAttribute("data-theme");
       setTheme(currentTheme || "light");
     }
   }, []);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       document.documentElement.setAttribute("data-theme", theme);
     }
   }, [theme]);

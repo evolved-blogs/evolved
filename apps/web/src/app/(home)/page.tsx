@@ -25,8 +25,8 @@ const Home = () => {
 
   useEffect(() => {
     // Ensure we're on the client side
-    if (typeof window === 'undefined') return;
-    
+    if (typeof window === "undefined") return;
+
     const hero = document.getElementById("hero-section");
     if (hero) {
       setHeroHeight(hero.offsetHeight);
@@ -34,7 +34,7 @@ const Home = () => {
 
     const handleScroll = () => {
       console.log("scrolling");
-      if (window.scrollY > heroHeight-80) {
+      if (window.scrollY > heroHeight - 80) {
         console.log("show header");
         setShowHeader(true);
       } else {
@@ -44,7 +44,7 @@ const Home = () => {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [heroHeight]); 
+  }, [heroHeight]);
 
   const handleAnimation = (index: number) => {
     const durations = [1, 1.3, 1.5];
@@ -67,7 +67,9 @@ const Home = () => {
     <div>
       <motion.div
         className={`fixed top-0 left-0 w-full bg-white shadow-md p-4 z-50 transition-all duration-500 ${
-          showHeader ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-full"
+          showHeader
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 -translate-y-full"
         }`}
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: showHeader ? 1 : 0, y: showHeader ? 0 : -20 }}
@@ -84,7 +86,8 @@ const Home = () => {
           <h1 className="text-2xl font-bold md:my-3">Latest Posts</h1>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-3">
             {posts.map((post, index) => {
-              const { thumbnail, author, description, slug, status, title } = post || {};
+              const { thumbnail, author, description, slug, status, title } =
+                post || {};
               const { firstName, avatar } = author || {};
 
               const handleOnClick = () => router.push(`/blogs/${slug}`);

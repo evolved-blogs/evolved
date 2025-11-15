@@ -1,6 +1,6 @@
 export const setCookie = (name: string, value: string, days: number) => {
-  if (typeof window === 'undefined') return; // Skip on server side
-  
+  if (typeof window === "undefined") return; // Skip on server side
+
   let expires = "";
   if (days) {
     const date = new Date();
@@ -11,8 +11,8 @@ export const setCookie = (name: string, value: string, days: number) => {
 };
 
 export const getCookie = (name: string): string | null => {
-  if (typeof window === 'undefined') return null; // Return null on server side
-  
+  if (typeof window === "undefined") return null; // Return null on server side
+
   const nameEQ = name + "=";
   const ca = document.cookie.split(";");
   for (let i = 0; i < ca.length; i++) {
