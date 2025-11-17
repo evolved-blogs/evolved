@@ -1,39 +1,35 @@
-"use client";
-
 import "./globals.css";
-import { usePathname } from "next/navigation";
+import { Metadata, Viewport } from "next";
+import { LayoutContent } from "./layout-content";
 
-import Header from "@src/components/common/header/Header";
-import { Providers } from "./providers";
-import { authenticatedRoutes } from "@src/routes";
-const appRoutes = Object.values(authenticatedRoutes);
+export const metadata: Metadata = {
+  title: "Evolved Blog",
+  description: "A modern blogging platform",
+  icons: {
+    icon: [
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
+  manifest: "/site.webmanifest",
+};
+
+export const viewport: Viewport = {
+  themeColor: "#ffffff",
+};
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const pathName = usePathname();
-
-  const matchedAppRoutes = appRoutes.some((route) => pathName === route);
-
-  if (!matchedAppRoutes || pathName === "/") {
-    return (
-      <html lang="en">
-        <body>
-          <Providers>{children}</Providers>
-        </body>
-      </html>
-    );
-  }
-
   return (
     <html lang="en">
       <body>
-        <Providers>
-          <Header />
-          {children}
-        </Providers>
+        <LayoutContent>{children}</LayoutContent>
       </body>
     </html>
   );
